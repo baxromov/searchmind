@@ -68,7 +68,7 @@ frontend/.vite/
 
 # Model cache
 .cache/
-models/
+#models/
 
 # Testing
 .pytest_cache/
