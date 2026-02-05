@@ -1,0 +1,81 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environment
+.venv/
+venv/
+ENV/
+env/
+
+# IDE
+.vscode/
+.idea/
+.claude/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Environment variables
+.env
+.env.local
+
+# Data directories
+data/uploads/*
+data/faiss_index/*
+data/temp/*
+!data/uploads/.gitkeep
+!data/faiss_index/.gitkeep
+!data/temp/.gitkeep
+
+# Backend data directories
+backend/data/uploads/*
+backend/data/faiss_index/*
+backend/data/temp/*
+!backend/data/uploads/.gitkeep
+!backend/data/faiss_index/.gitkeep
+!backend/data/temp/.gitkeep
+
+# Logs
+*.log
+logs/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.vite/
+
+# Model cache
+.cache/
+models/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# OS
+.DS_Store
+Thumbs.db
