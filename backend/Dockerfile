@@ -15,13 +15,19 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 
 # Configure pip to bypass SSL verification (for Windows SSL issues)
-RUN pip config set global.trusted-host "pypi.org pypi.python.org files.pythonhosted.org"
+RUN pip config set global.trusted-host "pypi.org pypi.python.org files.pythonhosted.org" && \
+    pip config set global.timeout "300"
 
 # Upgrade pip with trusted hosts to bypass SSL verification issues
 RUN pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --upgrade pip setuptools certifi
 
-# Install Python dependencies with trusted hosts
-RUN pip install --no-cache-dir --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org -r requirements.txt
+# Install large packages first with extended timeout to avoid ReadTimeout
+RUN pip install --no-cache-dir --timeout=600 --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org \
+    paddlepaddle>=2.6.0 \
+    torch torchvision --index-url https://download.pytorch.org/whl/cpu
+
+# Install remaining Python dependencies with extended timeout
+RUN pip install --no-cache-dir --timeout=600 --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org -r requirements.txt
 
 # Copy application code
 COPY . .
