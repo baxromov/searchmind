@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      target: production
+      args:
+        INSTALL_DEV: "false"
+    volumes:
+      # Remove code volume mount for production
+      - ./data:/app/data
+      - backend-models:/root/.cache
+    command: ["uv", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4"]
+    restart: unless-stopped
+
+  frontend:
+    restart: unless-stopped

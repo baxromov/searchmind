@@ -1,0 +1,34 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+*.md
+LICENSE
+
+# IDE
+.idea
+.vscode
+.DS_Store
+
+# Data directories
+data/uploads/*
+data/faiss_index/*
+data/temp/*
+
+# Keep the directory structure
+!data/uploads/.gitkeep
+!data/faiss_index/.gitkeep
+!data/temp/.gitkeep
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+
+# OS
+Thumbs.db

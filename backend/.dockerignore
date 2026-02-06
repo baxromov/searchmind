@@ -18,4 +18,5 @@ build
 data/uploads/*
 data/faiss_index/*
 data/temp/*
-uv.lock
+.pytest_cache
+.ruff_cache
