@@ -41,7 +41,7 @@ services:
       - "5173:5173"
     volumes:
       - ./frontend:/app
-      - /app/node_modules
+      - frontend-node-modules:/app/node_modules
     environment:
       - VITE_API_BASE_URL=http://localhost:8000
     depends_on:
@@ -51,6 +51,8 @@ services:
 
 volumes:
   backend-models:
+    driver: local
+  frontend-node-modules:
     driver: local
 
 networks:
