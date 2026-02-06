@@ -28,18 +28,11 @@ Search Pipeline: Query → Vector Search (top 25) → Re-rank (top 10)
 
 ### Prerequisites
 
-**Option 1: Docker (Recommended)**
-- Docker and Docker Compose
-- 2GB+ free disk space (for ML models)
-
-**Option 2: Local Development**
 - Python 3.9+
 - Node.js 18+
 - 2GB+ free disk space (for ML models)
 
-### Quick Start with Docker (Recommended)
-
-The easiest way to get started is using Docker with the included Makefile:
+### With Docker (Recommended)
 
 ```bash
 # Build and start all services
@@ -49,13 +42,7 @@ make up
 # View logs
 make logs
 
-# View backend logs only
-make logs-backend
-
-# Restart backend after code changes
-make restart-backend
-
-# Stop all services
+# Stop services
 make down
 ```
 
@@ -63,53 +50,9 @@ Services will be available at:
 - Backend API: `http://localhost:8000`
 - Frontend UI: `http://localhost:5173`
 
-#### Docker Commands Reference
+Run `make help` for all available commands.
 
-```bash
-# Development workflow
-make build              # Build all services (development mode)
-make up                 # Start all services
-make logs               # View logs from all services
-make restart-backend    # Restart backend only
-make down               # Stop all services
-
-# Testing
-make test-backend       # Run backend tests in container
-make health             # Check service health
-
-# Production deployment
-make build-prod         # Build with production optimizations
-make prod-up            # Start in production mode
-make prod-logs          # View production logs
-make prod-down          # Stop production mode
-
-# Maintenance
-make rebuild            # Clean rebuild from scratch
-make clean              # Remove containers and volumes
-make prune              # Remove all unused Docker resources
-```
-
-For all available commands, run: `make help`
-
-#### Using docker-compose Directly
-
-If you prefer not to use Make:
-
-```bash
-# Development mode
-docker-compose up -d
-docker-compose logs -f
-
-# Production mode
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
-
-# Stop services
-docker-compose down
-```
-
-### Local Development Setup
-
-If you prefer to run without Docker:
+### Local Development
 
 #### Backend Setup
 
@@ -117,9 +60,9 @@ If you prefer to run without Docker:
 # Activate virtual environment
 source .venv/bin/activate
 
-# Install dependencies with uv (faster) or pip
+# Install dependencies
 cd backend
-uv sync  # or: pip install -r requirements.txt
+pip install -r requirements.txt
 
 # Models will auto-download on first run (~500MB)
 
@@ -290,61 +233,6 @@ VITE_API_BASE_URL=http://localhost:8000
 ```
 
 ## Troubleshooting
-
-### Docker Issues
-
-#### Build Failures on Windows
-The Docker setup uses `uv` package manager which handles SSL certificates better than pip. If you experience build issues:
-
-```bash
-# Clean rebuild
-make clean
-make build
-
-# Check logs during build
-docker-compose build --no-cache --progress=plain
-```
-
-#### Container Won't Start
-```bash
-# Check container logs
-make logs-backend
-
-# Check if ports are already in use
-lsof -i :8000  # macOS/Linux
-netstat -ano | findstr :8000  # Windows
-
-# Remove old containers and rebuild
-make rebuild
-```
-
-#### Models Not Downloading
-Models are cached in a Docker volume. If downloads fail:
-
-```bash
-# Remove model cache and restart
-docker volume rm searchmind_backend-models
-make restart-backend
-```
-
-#### Permission Issues
-```bash
-# Fix data directory permissions (Linux/macOS)
-chmod -R 755 data/
-
-# If using Docker on Linux, you may need to run with sudo
-sudo make up
-```
-
-#### Hot-Reload Not Working
-Make sure you're running in development mode (default):
-```bash
-# Development mode has hot-reload enabled
-make up
-
-# Check if volume mounts are working
-docker-compose exec backend ls -la /app
-```
 
 ### PaddleOCR Installation Issues
 ```bash

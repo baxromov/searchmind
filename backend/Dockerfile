@@ -11,9 +11,8 @@ RUN apt-get update && apt-get install -y \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# Install uv
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh
-ENV PATH="/root/.cargo/bin:$PATH"
+# Install uv using pip (more reliable for Windows Docker)
+RUN pip install --no-cache-dir uv && uv --version
 
 # Set working directory
 WORKDIR /app
