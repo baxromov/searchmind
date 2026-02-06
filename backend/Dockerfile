@@ -8,15 +8,19 @@ RUN apt-get update && apt-get install -y \
     poppler-utils \
     libgomp1 \
     curl \
+    ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements first for better caching
 COPY requirements.txt .
 
-# Upgrade pip, setuptools, and certifi to fix SSL issues
-RUN pip install --upgrade pip setuptools certifi
+# Configure pip to bypass SSL verification (for Windows SSL issues)
+RUN pip config set global.trusted-host "pypi.org pypi.python.org files.pythonhosted.org"
 
-# Install Python dependencies with trusted hosts for SSL issues
+# Upgrade pip with trusted hosts to bypass SSL verification issues
+RUN pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --upgrade pip setuptools certifi
+
+# Install Python dependencies with trusted hosts
 RUN pip install --no-cache-dir --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org -r requirements.txt
 
 # Copy application code
