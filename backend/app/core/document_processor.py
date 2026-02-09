@@ -5,24 +5,12 @@ from pathlib import Path
 from app.models.schemas import PageContent
 from app.config import settings
 
-# Try to import PaddleOCR (optional for scanned document support)
-try:
-    from paddleocr import PaddleOCR
-    from pdf2image import convert_from_path
-    import numpy as np
-    OCR_AVAILABLE = True
-except Exception as e:  # Catch ALL exceptions, not just ImportError
-    OCR_AVAILABLE = False
-    print(f"⚠️  PaddleOCR not available: {e}")
-    print("   OCR for scanned documents will be disabled.")
-    print("   Text extraction from native PDFs/DOCX will still work.")
-
 
 class DocumentProcessor:
     """Extract text from PDF/DOCX with optional OCR support"""
 
     def __init__(self):
-        # Initialize PaddleOCR if available and enabled in settings
+        # Initialize PaddleOCR if enabled in settings
         self.ocr_engine: Optional[any] = None
 
         # Check if OCR is enabled in settings
@@ -30,19 +18,18 @@ class DocumentProcessor:
             print("ℹ️  PaddleOCR disabled via settings (USE_OCR=False)")
             return
 
-        if OCR_AVAILABLE:
-            try:
-                self.ocr_engine = PaddleOCR(
-                    use_angle_cls=True,
-                    lang='en',
-                    show_log=False
-                )
-                print("✅ PaddleOCR initialized - scanned document support enabled")
-            except Exception as e:
-                print(f"⚠️  Failed to initialize PaddleOCR: {e}")
-                print("   Continuing without OCR support")
-        else:
-            print("ℹ️  PaddleOCR not available - OCR disabled")
+        # Lazy import - only import PaddleOCR if USE_OCR is enabled
+        try:
+            from paddleocr import PaddleOCR
+            self.ocr_engine = PaddleOCR(
+                use_angle_cls=True,
+                lang='en',
+                show_log=False
+            )
+            print("✅ PaddleOCR initialized - scanned document support enabled")
+        except Exception as e:
+            print(f"⚠️  Failed to initialize PaddleOCR: {e}")
+            print("   Continuing without OCR support")
 
     def process_document(self, file_path: str) -> List[PageContent]:
         """
@@ -117,11 +104,15 @@ class DocumentProcessor:
         Returns:
             Extracted text
         """
-        if not self.ocr_engine or not OCR_AVAILABLE:
+        if not self.ocr_engine:
             print(f"⚠️  OCR requested but not available for page {page_num}")
             return ""
 
         try:
+            # Import dependencies only when needed
+            from pdf2image import convert_from_path
+            import numpy as np
+
             # Convert PDF page to image
             images = convert_from_path(
                 pdf_path,
