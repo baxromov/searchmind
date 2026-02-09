@@ -16,6 +16,9 @@ class Settings(BaseSettings):
     # Upload
     MAX_FILE_SIZE_MB: int = 50
 
+    # OCR
+    USE_OCR: bool = True
+
     # Models
     EMBEDDING_MODEL: str = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
     RERANKER_MODEL: str = "cross-encoder/ms-marco-MiniLM-L-6-v2"

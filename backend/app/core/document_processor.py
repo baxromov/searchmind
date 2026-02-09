@@ -22,8 +22,14 @@ class DocumentProcessor:
     """Extract text from PDF/DOCX with optional OCR support"""
 
     def __init__(self):
-        # Initialize PaddleOCR if available
+        # Initialize PaddleOCR if available and enabled in settings
         self.ocr_engine: Optional[any] = None
+
+        # Check if OCR is enabled in settings
+        if not settings.USE_OCR:
+            print("ℹ️  PaddleOCR disabled via settings (USE_OCR=False)")
+            return
+
         if OCR_AVAILABLE:
             try:
                 self.ocr_engine = PaddleOCR(
