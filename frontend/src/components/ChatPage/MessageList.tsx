@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { User, Bot, FileText, ChevronDown, ChevronUp } from 'lucide-react';
-import { Message } from '../../hooks/useChat';
+import type { Message } from '../../hooks/useChat';
 import './ChatPage.css';
 
 interface MessageListProps {

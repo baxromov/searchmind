@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { ChatMessage, Source, streamChatMessage } from '../services/api';
+import { type ChatMessage, type Source, streamChatMessage } from '../services/api';
 
 export interface Message extends ChatMessage {
   id: string;
