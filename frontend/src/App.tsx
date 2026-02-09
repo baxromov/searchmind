@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Sidebar from './components/Sidebar/Sidebar';
 import SearchPage from './components/SearchPage/SearchPage';
 import KnowledgeBase from './components/KnowledgeBase/KnowledgeBase';
+import { ChatPage } from './components/ChatPage/ChatPage';
 import './App.css';
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Navigate to="/search" replace />} />
             <Route path="/search" element={<SearchPage />} />
+            <Route path="/chat" element={<ChatPage />} />
             <Route path="/knowledge-base" element={<KnowledgeBase />} />
           </Routes>
         </main>

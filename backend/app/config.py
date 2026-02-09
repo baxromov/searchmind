@@ -26,6 +26,11 @@ class Settings(BaseSettings):
     # Embedding dimension for the multilingual model
     EMBEDDING_DIMENSION: int = 384
 
+    # Chat/LLM Settings
+    OLLAMA_BASE_URL: str = "http://localhost:11434"
+    OLLAMA_MODEL: str = "gemma3:1b"
+    CHAT_TOP_K: int = 10
+
     class Config:
         env_file = ".env"
         case_sensitive = True

@@ -13,9 +13,10 @@ from app.core.vector_store import VectorStore
 from app.services.upload_service import UploadService
 from app.services.search_service import SearchService
 from app.services.resource_service import ResourceService
+from app.services.chat_service import ChatService
 
 # Import routes
-from app.api.routes import upload, search, resources
+from app.api.routes import upload, search, resources, chat
 
 # Import config
 from app.config import settings
@@ -25,13 +26,14 @@ from app.config import settings
 upload_service: UploadService = None
 search_service: SearchService = None
 resource_service: ResourceService = None
+chat_service: ChatService = None
 vector_store: VectorStore = None
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Initialize services on startup"""
-    global upload_service, search_service, resource_service, vector_store
+    global upload_service, search_service, resource_service, chat_service, vector_store
 
     print("=" * 60)
     print("Initializing SearchMind services...")
@@ -51,6 +53,10 @@ async def lifespan(app: FastAPI):
     upload_service = UploadService(processor, chunker, embedder, vector_store)
     search_service = SearchService(embedder, vector_store, reranker)
     resource_service = ResourceService(vector_store)
+    chat_service = ChatService(search_service)
+
+    # Store in app state for access in routes
+    app.state.chat_service = chat_service
 
     print("=" * 60)
     print(f"SearchMind initialized with {vector_store.get_total_documents()} indexed chunks")
@@ -82,6 +88,7 @@ app.add_middleware(
 app.include_router(upload.router, prefix="/resources", tags=["upload"])
 app.include_router(resources.router, prefix="/resources", tags=["resources"])
 app.include_router(search.router, tags=["search"])
+app.include_router(chat.router, tags=["chat"])
 
 
 @app.get("/")

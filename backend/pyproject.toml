@@ -21,6 +21,9 @@ dependencies = [
     "transformers",
     # Text Processing
     "langchain-text-splitters",
+    # LLM & Chat
+    "langchain-ollama",
+    "langchain-core",
     # Utilities
     "pydantic",
     "pydantic-settings",

@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Search, Upload, Database } from 'lucide-react';
+import { Search, Upload, Database, MessageCircle } from 'lucide-react';
 import './Sidebar.css';
 
 const Sidebar = () => {
@@ -7,6 +7,7 @@ const Sidebar = () => {
 
   const menuItems = [
     { path: '/search', icon: Search, label: 'Search' },
+    { path: '/chat', icon: MessageCircle, label: 'Chat' },
     { path: '/knowledge-base', icon: Database, label: 'Knowledge Base' },
   ];
 

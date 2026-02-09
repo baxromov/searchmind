@@ -71,3 +71,31 @@ class ChunkDetail(BaseModel):
     chunk_id: str
     text: str
     page_number: int
+
+
+class ChatMessage(BaseModel):
+    """Chat message with role and content"""
+    role: str  # "user" or "assistant"
+    content: str
+
+
+class ChatRequest(BaseModel):
+    """Request for chat endpoint"""
+    message: str = Field(..., min_length=1, max_length=1000)
+    history: Optional[List[ChatMessage]] = []
+
+
+class Source(BaseModel):
+    """Source document for chat response"""
+    file_name: str
+    page_number: int
+    text: str
+    score: float
+
+
+class ChatResponse(BaseModel):
+    """Response from chat endpoint"""
+    answer: str
+    sources: List[Source]
+    rewritten_query: str
+    search_time_ms: float

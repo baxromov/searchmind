@@ -19,6 +19,10 @@ transformers>=4.40.0
 # Text Processing
 langchain-text-splitters>=0.3.0
 
+# LLM & Chat
+langchain-ollama>=0.1.0
+langchain-core>=0.3.0
+
 # Utilities
 pydantic>=2.0.0
 pydantic-settings>=2.0.0
